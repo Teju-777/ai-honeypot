@@ -1,12 +1,9 @@
-# honeypot.py
 from flask import Flask, request
-import pandas as pd
+import requests
 from datetime import datetime
 
 app = Flask(__name__)
-
-# Log file to store attack data
-log_file = "honeypot_log.csv"
+WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxEnJzfhC1FkLB-CcAocIdzR37J6d0MSKrg0wT5fiKWltkOWPzQnOnU6kISWdhHsKRM-Q/exec'  # Replace this
 
 @app.route('/')
 def home():
@@ -22,16 +19,17 @@ def home():
 @app.route('/login', methods=['POST'])
 def login():
     data = {
-        "timestamp": datetime.now(),
+        "timestamp": str(datetime.now()),
         "ip": request.remote_addr,
         "username": request.form.get('username'),
         "password": request.form.get('password'),
         "user_agent": request.headers.get('User-Agent')
     }
 
-    # Log data
-    df = pd.DataFrame([data])
-    df.to_csv(log_file, mode='a', header=not pd.io.common.file_exists(log_file), index=False)
+    try:
+        requests.post(WEBHOOK_URL, json=data)
+    except Exception as e:
+        print("Error sending to Google Sheets:", e)
 
     return "Invalid credentials!"
 
