@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: honeypot
-    env: python
-    plan: free
-    buildCommand: ""
-    startCommand: python honeypot.py

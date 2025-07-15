@@ -1,3 +1,7 @@
 flask
 pandas
 requests
+streamlit
+matplotlib
+gspread
+oauth2client

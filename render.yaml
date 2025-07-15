@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: honeypot-dashboard
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: streamlit run dashboard.py --server.port=10000
+    envVars:
+      - key: STREAMLIT_SERVER_HEADLESS
+        value: "true"
